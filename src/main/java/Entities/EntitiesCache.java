@@ -14,7 +14,7 @@ public final class EntitiesCache {
     public static Entity getEntity(int id){
     Entity entity = map.get(id);
     if(entity == null){
-        throw new IllegalArgumentException("Nie istnieje obiekt od id:"+id);
+        throw new IllegalArgumentException("Nie istnieje obiekt o id:"+id);
     }
     return(Entity) entity.clone();
     }
