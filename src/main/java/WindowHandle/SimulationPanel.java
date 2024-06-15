@@ -1,18 +1,26 @@
 package WindowHandle;
 
-import Entities.Entity;
+import Entities.Cities.CityList;
+import Entities.Cities.JobList;
+import Entities.Ships.PirateShip;
+import Entities.Ships.Ship;
+import Entities.Ships.ShipList;
 import World.World;
+import com.sun.tools.javac.Main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SimulationPanel extends JPanel implements Runnable {
-    final int scale = 8;
+    public static int stage =0;
+    public static final int scale = 8;
     final int size = World.getInstance().getMap().size();
     final int screenSize = size * scale;
-
-    int fps = 60;
+    int fps = 20;
 
     Thread simulationThread;
 
@@ -29,6 +37,7 @@ public class SimulationPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
+
         double drawInterval = (double) 1000000000 / fps;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -46,7 +55,11 @@ public class SimulationPanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        CityList.generateContract();
+        ShipList.doAction();
+        JobList.printList();
 
+        //System.out.println(stage++);
     }
 
     public void paintComponent(Graphics g) {
@@ -73,6 +86,8 @@ public class SimulationPanel extends JPanel implements Runnable {
                 g2.fillRect((j) * scale, (i) * scale, scale, scale);
 
             }
+            CityList.drawList(g2);
         }
+        ShipList.drawShips(g2,scale);
     }
 }

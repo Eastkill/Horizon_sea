@@ -4,29 +4,25 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
-abstract public class Entity implements Cloneable {
-    int x,y;
+abstract public class Entity {
+
+    private static int idCount;
     int id;
-    public String consoleRepresentation;
+
+    int x,y;
     public BufferedImage image;
-    boolean ghost;
-    public Entity(String consoleRepresentation, boolean ghost,int id, String image){
-        this.consoleRepresentation = consoleRepresentation;
-        this.ghost = ghost;
-        this.id = id;
+    public Entity(int x, int y, String imageSrc){
+        this.x = x;
+        this.y = y;
+        this.id = getUniqueId();
         try {
-            this.image = ImageIO.read(getClass().getResourceAsStream("/"+image));
+            this.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/" + imageSrc)));
         }
         catch (IOException e){
             System.out.println(e);
         }
-    }
-    public Entity(int x, int y, String consoleRepresentation, boolean ghost){
-        this.x = x;
-        this.y = y;
-        this.consoleRepresentation = consoleRepresentation;
-        this.ghost = ghost;
     }
     public int getId(){
         return this.id;
@@ -38,7 +34,9 @@ abstract public class Entity implements Cloneable {
     public int[] getCoordinates(){
         return new int[]{x, y};
     }
+    public static int getUniqueId(){
+        idCount++;
+        return idCount;
+    }
 
-    @Override
-    abstract public Object clone();
 }

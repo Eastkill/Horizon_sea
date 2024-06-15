@@ -7,7 +7,9 @@ public class RandomSingleton extends Random {
     private RandomSingleton(long seed){
         this.setSeed(seed);
     }
-
+    public static void changeSeed(int seed){
+        instance = new RandomSingleton(seed);
+    }
     public static RandomSingleton getInstance(int seed) {
         if(instance == null){
             instance = new RandomSingleton(seed);

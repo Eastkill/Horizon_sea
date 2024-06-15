@@ -1,5 +1,6 @@
 package WindowHandle;
 
+import Utils.RandomSingleton;
 import World.World;
 
 import javax.swing.*;
@@ -10,13 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ParametersPanel extends JPanel implements ChangeListener {
-    JSlider s1 = new JSlider(-100,100);
+    JSlider s1 = new JSlider(-100,100,0);
     JLabel l1 = new JLabel(String.valueOf(s1.getValue()/100));
-    JSlider s2 = new JSlider(-100,100);
+    JSlider s2 = new JSlider(-100,100,65);
     JLabel l2 = new JLabel(String.valueOf(s1.getValue()/100));
-    JSlider s3 = new JSlider(-100,100);
+    JSlider s3 = new JSlider(-100,100,75);
     JLabel l3 = new JLabel(String.valueOf(s1.getValue()/100));
-    JSlider s4 = new JSlider(-100,100);
+    JSlider s4 = new JSlider(-100,100,85);
     JLabel l4 = new JLabel(String.valueOf(s1.getValue()/100));
     JButton b = new JButton("Generate");
 
@@ -29,7 +30,7 @@ public class ParametersPanel extends JPanel implements ChangeListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 World.setInstance((double) s1.getValue() /100, (double) s2.getValue() /100, (double) s3.getValue() /100, (double) s4.getValue() /100);
-                System.out.println("Nowy Świat!!!");
+
             }
         });
         this.setPreferredSize(new Dimension(200, SimulationPanel.HEIGHT));
