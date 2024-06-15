@@ -46,7 +46,7 @@ public class ShipList {
                 g.setColor(Color.MAGENTA);
                 break;
             case 2:
-                g.setColor(Color.CYAN);
+                g.setColor(Color.BLACK);
                 break;
             case 3:
                 g.setColor(Color.YELLOW);

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransportShip extends FleetShip{
-    List<int[]> cords =new ArrayList<>();
     public Job job;
     private City towardThis = null;
     public TransportShip(int x, int y) {
@@ -32,7 +31,19 @@ public class TransportShip extends FleetShip{
         job = null;
     }
     public void doSomething(){
-        if(towardThis == null)towardThis=CityList.getList().get(RandomSingleton.getInstance().nextInt(CityList.getList().size()));
+        takeDamage();
+        if(this.reported){
+            return;
+        }
+        if(towardThis == null){
+            if(!JobList.getList().isEmpty()){
+                System.out.println("najblizszy");
+            towardThis=JobList.getList().getFirst().mainCity;
+            return;
+            }
+            towardThis=CityList.getList().get(RandomSingleton.getInstance().nextInt(CityList.getList().size()));
+
+        }
         if (EntityUtils.isNeigbours(this.getCoordinates(), towardThis.getCoordinates())){
             for(Job j: JobList.getList()){
                 if (j.mainCity == towardThis) takeJob(j);
@@ -63,5 +74,9 @@ public class TransportShip extends FleetShip{
         if(cords.isEmpty())return;
       move(cords.getFirst()[0]-this.getCoordinates()[0],cords.getFirst()[1]-this.getCoordinates()[1]);
       cords.removeFirst();
+    }
+
+    public Job getJob() {
+        return job;
     }
 }

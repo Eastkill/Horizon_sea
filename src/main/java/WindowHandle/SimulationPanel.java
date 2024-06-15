@@ -55,6 +55,7 @@ public class SimulationPanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        JobList.printList();
         CityList.generateContract();
         ShipList.doAction();
         JobList.printList();

@@ -80,7 +80,7 @@ public class WorldGenerator {
             int i = RandomSingleton.getInstance().nextInt(map.size() - 1);
             int j = RandomSingleton.getInstance().nextInt(map.size() - 1);
             if (map.get(j).get(i) == 0 && Pathfinding.isConnectedCity(map,i,j,new boolean[map.size()][map.size()])) {
-                ShipList.addShip(i,j,(int)(RandomSingleton.getInstance().nextInt(2)));
+                ShipList.addShip(i,j,(int)(RandomSingleton.getInstance().nextInt(3)));
                 count--;
             }
             failed++;

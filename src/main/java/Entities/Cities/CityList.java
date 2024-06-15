@@ -34,7 +34,7 @@ public class CityList {
     }
     public static void generateContract(){
         for (City c:list){
-            if(RandomSingleton.getInstance().nextDouble()>0.993){
+            if(RandomSingleton.getInstance().nextDouble()>0.993&&JobList.getList().size()<5){
                 c.generateJob();
                 continue;
             }

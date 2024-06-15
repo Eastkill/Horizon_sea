@@ -9,8 +9,9 @@ public class JobList {
     }
     public static void printList(){
         for(Job j: list){
-          //  System.out.println("od: "+j.mainCity.getName()+" za: "+j.value + " do: "+ j.recipient.getName());
+           System.out.println("od: "+j.mainCity.getName()+" za: "+j.value + " do: "+ j.recipient.getName());
         }
+        System.out.println();
     }
     public static void resetList(){
         list = new ArrayList<Job>();

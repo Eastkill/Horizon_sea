@@ -1,5 +1,6 @@
 package Entities.Ships;
 
+import Entities.Cities.JobList;
 import Utils.EntityUtils;
 import Utils.Pathfinding;
 import Utils.RandomSingleton;
@@ -20,9 +21,9 @@ public class PirateShip extends Ship{
     @Override
     public void doSomething() {
         for(Ship s: ShipList.getList()){
-            if(s.getClass()!= PirateShip.class) {
+            if(s.getClass()== TransportShip.class) {
                 if (EntityUtils.isNeigbours(s.getCoordinates(), this.getCoordinates())) {
-                    board((FleetShip) s);
+                    board((TransportShip) s);
                     return;
                 }
             }
@@ -45,7 +46,8 @@ public class PirateShip extends Ship{
     }
 
 
-    private void board(FleetShip ship){
+    private void board(TransportShip ship){
     ShipList.removeShip(ship);
+    if(ship.getJob()!=null)JobList.addJob(ship.getJob());
     }
 }
