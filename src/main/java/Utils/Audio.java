@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Audio {
 
-    private static final String path = "E:\\pwr\\Horizon_sea\\src\\main\\resources\\audio.wav";
+    private static final String path = "/audio.wav";
     public static void Playmusic(){
         try{
             File musicPath = new File(path);
@@ -14,14 +14,13 @@ public class Audio {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInput);
-                FloatControl gainControl =
-                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(-15.0f);
                 clip.loop(1000);
                 clip.start();
             }
             else {
-            System.out.println("lol");
+            //System.out.println("lol");
             }
         }
         catch (Exception e){

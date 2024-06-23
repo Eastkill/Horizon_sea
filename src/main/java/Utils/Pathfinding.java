@@ -8,42 +8,46 @@ import java.util.*;
 
 public class Pathfinding {
     static int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    private static boolean[][] visited;
 
     public static boolean isConnectedCity(ArrayList<ArrayList<Integer>> map, int startx, int starty, boolean[][] visited) {
-        if (CityList.getList().isEmpty()) return true;
-        int[] start = {startx, starty};
-        int[] goal = CityList.getList().getFirst().getCoordinates();
+        try {
+            if (CityList.getList().isEmpty()) return true;
+            int[] start = {startx, starty};
+            int[] goal = CityList.getList().getFirst().getCoordinates();
+            int x = start[0];
+            int y = start[1];
 
-        int x = start[0];
-        int y = start[1];
+            // Sprawdzenie, czy osiągnięto cel
+            if ((x == goal[0] - 1 && y == goal[1]) ||
+                    (x == goal[0] + 1 && y == goal[1]) ||
+                    (x == goal[0] && y == goal[1] + 1) ||
+                    (x == goal[0] && y == goal[1] - 1)
+            ) {
+                return true;
+            }
 
-        // Sprawdzenie, czy osiągnięto cel
-        if ((x == goal[0] - 1 && y == goal[1]) ||
-                (x == goal[0] + 1 && y == goal[1]) ||
-                (x == goal[0] && y == goal[1] + 1) ||
-                (x == goal[0] && y == goal[1] - 1)
-        ) {
-            return true;
-        }
+            // Oznaczenie aktualnej pozycji jako odwiedzonej
+            visited[x][y] = true;
 
-        // Oznaczenie aktualnej pozycji jako odwiedzonej
-        visited[x][y] = true;
+            // Iteracja przez wszystkie możliwe kierunki
+            for (int[] dir : directions) {
+                int nx = x + dir[0];
+                int ny = y + dir[1];
 
-        // Iteracja przez wszystkie możliwe kierunki
-        for (int[] dir : directions) {
-            int nx = x + dir[0];
-            int ny = y + dir[1];
-
-            // Sprawdzenie, czy nowa pozycja jest w granicach mapy i jest wodą, oraz czy nie była odwiedzona
-            if (nx >= 0 && nx < map.size() && ny >= 0 && ny < map.get(0).size() && map.get(ny).get(nx) == 0 && !visited[nx][ny]) {
-                if (isConnectedCity(map, nx, ny, visited)) {
-                    return true;
+                // Sprawdzenie, czy nowa pozycja jest w granicach mapy i jest wodą, oraz czy nie była odwiedzona
+                if (nx >= 0 && nx < map.size() && ny >= 0 && ny < map.getFirst().size() && map.get(ny).get(nx) == 0 && !visited[nx][ny]) {
+                    if (isConnectedCity(map, nx, ny, visited)) {
+                        return true;
+                    }
                 }
             }
+            return false;
+        }catch(StackOverflowError e){
+            System.out.println("dupa");
         }
-
         return false;
-    }
+        }
 
     public class AStarAlgorithm {
         // Kierunki ruchu: prawo, dół, lewo, góra
@@ -141,8 +145,17 @@ public class Pathfinding {
             Collections.reverse(path);
             return path;
         }
-        public boolean largestWater(){
-return true;
+
+        public boolean largestWater() {
+            return true;
         }
+    }
+
+    public static boolean nearCity(int[] coordinates) {
+        for (City c : CityList.getList()) {
+            if (Math.pow(c.getCoordinates()[0] - coordinates[0], 2) + Math.pow(c.getCoordinates()[1] - coordinates[1], 2) >= 25)
+                return true;
+        }
+        return false;
     }
 }

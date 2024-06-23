@@ -15,19 +15,28 @@ abstract public class FleetShip extends Ship {
         super(x, y,img,1,type);
         this.durability = 1;
     }
-    protected void takeDamage(){
-        if(RandomSingleton.getInstance().nextDouble()>=0.997&&!reported){
-            this.setReported();
-            DamageList.damageList.add(this);
-        }
-    }
+
     public abstract void doSomething();
+
+    /**
+     * This method switch repair state of ship
+     */
     public void setRepairing(){
         this.repairing = !this.repairing;
     }
+
+    /**
+     * !!to delete
+     * This method repair ship
+     */
     public void repair(){
         this.durability+=0.5;
     }
+
+    /**
+     * !!to delete
+     * This method switch report state of ship
+     */
     public void setReported(){
         this.reported = !this.reported;
     }

@@ -19,7 +19,7 @@ public class World {
     private static World instance;
     private World(int size){
 
-        map = WorldGenerator.getMap(size,-0.2,0.4,0.5,0.6);
+        map = WorldGenerator.getMap(size,-0.2,0.4,0.5,0.6,2);
     }
     public static World getInstance(int size){
         if(instance == null){
@@ -33,19 +33,27 @@ public class World {
         }
         return instance;
     }
-    public static void setInstance(double p1,double p2,double p3,double p4){
-        int seed = (int)(Math.random()*1000);
-        System.out.println(seed);
-        Stats.value = 1000000;
+
+    public static void setInstance(double p1,double p2,double p3,double p4, int money,int pirates,int seed){
+        if(instance==null){
+            instance = new World(128);
+        }
+      //  System.out.println(seed);
+        Stats.value = money;
+        Stats.valuelose = 0;
+        Stats.valuewin = 0;
         RandomSingleton.changeSeed(seed);
+
         CityList.resetList();
         ShipList.resetList();
         JobList.resetList();
-        SimulationPanel.stage=0;
+        Stats.stage=0;
+        Stats.win=false;
+        Stats.lost=false;
 
 
 
-        map = WorldGenerator.getMap(map.size(),p1,p2,p3,p4);
+        map = WorldGenerator.getMap(map.size(),p1,p2,p3,p4,pirates);
         //CityList.ShowList();
     }
     /*

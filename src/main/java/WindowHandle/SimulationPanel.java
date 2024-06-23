@@ -5,6 +5,7 @@ import Entities.Cities.JobList;
 import Entities.Ships.PirateShip;
 import Entities.Ships.Ship;
 import Entities.Ships.ShipList;
+import Utils.Stats;
 import World.World;
 import com.sun.tools.javac.Main;
 
@@ -16,11 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SimulationPanel extends JPanel implements Runnable {
-    public static int stage =0;
     public static final int scale = 8;
     final int size = World.getInstance().getMap().size();
     final int screenSize = size * scale;
-    int fps = 20;
+    public static int fps = 30;
 
     Thread simulationThread;
 
@@ -38,18 +38,26 @@ public class SimulationPanel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        double drawInterval = (double) 1000000000 / fps;
+        double drawInterval;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-        while (simulationThread != null) {
-            currentTime = System.nanoTime();
-            delta += (currentTime - lastTime) / drawInterval;
-            lastTime = currentTime;
-            if (delta >= 1) {
-                update();
-                repaint();
-                delta--;
+        while(simulationThread != null) {
+            while ((!Stats.win && !Stats.lost)) {
+                drawInterval = (double) 1000000000 / fps;
+                currentTime = System.nanoTime();
+                delta += (currentTime - lastTime) / drawInterval;
+                lastTime = currentTime;
+                if (delta >= 1) {
+                    update();
+                    repaint();
+                    delta--;
+                }
+            }
+            if (Stats.win) {
+                System.out.println("win");
+            } else {
+                System.out.println("lost");
             }
         }
     }
@@ -59,8 +67,9 @@ public class SimulationPanel extends JPanel implements Runnable {
         CityList.generateContract();
         ShipList.doAction();
         JobList.printList();
-
-        //System.out.println(stage++);
+        Stats.checkWin();
+        Stats.checkLose();
+        Stats.stage++;
     }
 
     public void paintComponent(Graphics g) {

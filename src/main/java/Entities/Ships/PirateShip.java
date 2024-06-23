@@ -4,6 +4,7 @@ import Entities.Cities.JobList;
 import Utils.EntityUtils;
 import Utils.Pathfinding;
 import Utils.RandomSingleton;
+import Utils.Stats;
 import WindowHandle.SimulationPanel;
 import World.World;
 
@@ -33,7 +34,10 @@ public class PirateShip extends Ship{
                 int x = RandomSingleton.getInstance().nextInt(World.getInstance().getMap().size()-1);
                 int y = RandomSingleton.getInstance().nextInt(World.getInstance().getMap().size()-1);
                 if(Pathfinding.isConnectedCity(World.getInstance().getMap(),x,y,new boolean[World.getInstance().getMap().size()][World.getInstance().getMap().size()])){
-                    cords=Pathfinding.AStarAlgorithm.aStar(World.getInstance().getMap(),this.getCoordinates(),new int[]{x,y});
+                    if(Pathfinding.nearCity(new int[]{x,y})) {
+                        cords = Pathfinding.AStarAlgorithm.aStar(World.getInstance().getMap(), this.getCoordinates(), new int[]{x, y});
+                        return;
+                    }
                     return;
                 }
             };
@@ -45,9 +49,14 @@ public class PirateShip extends Ship{
         else cords.clear();
     }
 
-
+    /**
+     * This method deletes boarded transport ship and takes value of its to Job to LoseValue
+     * @param ship transport ship to be boarded
+     */
     private void board(TransportShip ship){
     ShipList.removeShip(ship);
-    if(ship.getJob()!=null)JobList.addJob(ship.getJob());
+    if(ship.getJob()!=null){
+        Stats.valuelose+=ship.job.value;
+    }
     }
 }

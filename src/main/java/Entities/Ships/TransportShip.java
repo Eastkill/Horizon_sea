@@ -22,14 +22,25 @@ public class TransportShip extends FleetShip{
         super(x, y,"transport.png",1);
     }
 
+    /**
+     * Takes new job
+     * @param job job to be taken
+     */
     private void takeJob(Job job){
     this.job = job;
     }
+
+    /**
+     * Ends job and adds bounty to global Stats
+     */
     private void endJob(){
         Stats.value += job.value;
+        Stats.valuewin +=job.value;
+        //System.out.println(Stats.valuewin);
         towardThis = null;
         job = null;
     }
+
     public void doSomething(){
         takeDamage();
         if(this.reported){
@@ -37,7 +48,7 @@ public class TransportShip extends FleetShip{
         }
         if(towardThis == null){
             if(!JobList.getList().isEmpty()){
-                System.out.println("najblizszy");
+                //System.out.println("najblizszy");
             towardThis=JobList.getList().getFirst().mainCity;
             return;
             }
@@ -70,6 +81,10 @@ public class TransportShip extends FleetShip{
 
 
     }
+
+    /**
+     * This method moves by one tile in direction of specific city, based on cords, based on A* algorithm
+     */
     private void goToCity(){
         if(cords.isEmpty())return;
       move(cords.getFirst()[0]-this.getCoordinates()[0],cords.getFirst()[1]-this.getCoordinates()[1]);
@@ -78,5 +93,15 @@ public class TransportShip extends FleetShip{
 
     public Job getJob() {
         return job;
+    }
+
+    /**
+     * This method randomly switches state of ship to be damaged
+     */
+    public void takeDamage(){
+        if(RandomSingleton.getInstance().nextDouble()>=0.997&&!reported){
+            this.setReported();
+            DamageList.damageList.add(this);
+        }
     }
 }

@@ -25,8 +25,11 @@ public class WorldGenerator {
     }
 
     private static void generateBorders(double p1,double p2,double p3,double p4) {
+
         int seed = RandomSingleton.getInstance().nextInt();
+
         int size = map.size();
+
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
                 if (OpenSimplex2S.noise2_ImproveX(seed, (double) x / 64, (double) y / 64) >=  p1)
@@ -41,6 +44,7 @@ public class WorldGenerator {
 
             }
         }
+
         generateCities();
     }
 
@@ -52,7 +56,6 @@ public class WorldGenerator {
             int y = RandomSingleton.getInstance().nextInt(map.size() - 1);
             if (map.get(y).get(x) == 1) {
                 if (checkNeighbours(x, y) && Pathfinding.isConnectedCity(map,x,y,new boolean[map.size()][map.size()])) {
-//                    map.get(j).set(i, 2);
                     City c = new City(x,y);
                     c.setName(City.CitiesNames.values()[RandomSingleton.getInstance().nextInt(City.CitiesNames.values().length)].toString());
                     CityList.addList(c);
@@ -80,17 +83,26 @@ public class WorldGenerator {
             int i = RandomSingleton.getInstance().nextInt(map.size() - 1);
             int j = RandomSingleton.getInstance().nextInt(map.size() - 1);
             if (map.get(j).get(i) == 0 && Pathfinding.isConnectedCity(map,i,j,new boolean[map.size()][map.size()])) {
-                ShipList.addShip(i,j,(int)(RandomSingleton.getInstance().nextInt(3)));
+                ShipList.addShip(i,j,0);
                 count--;
+            }
+            failed++;
+        }
+        while (failed<map.size()) {
+            int i = RandomSingleton.getInstance().nextInt(map.size() - 1);
+            int j = RandomSingleton.getInstance().nextInt(map.size() - 1);
+            if (map.get(j).get(i) == 0 && Pathfinding.isConnectedCity(map,i,j,new boolean[map.size()][map.size()])) {
+                ShipList.addShip(i,j,2);
+                return;
             }
             failed++;
         }
     }
 
-    public static ArrayList<ArrayList<Integer>> getMap(int size,double p1,double p2,double p3,double p4) {
+    public static ArrayList<ArrayList<Integer>> getMap(int size,double p1,double p2,double p3,double p4,int pirates) {
         init(size);
         generateBorders(p1,p2,p3,p4);
-        generateShips(5);
+        generateShips(pirates);
         return map;
     }
 }
